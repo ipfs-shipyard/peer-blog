@@ -15,6 +15,9 @@
     "redux-auth-wrapper": "^2.0.2",
     "redux-logger": "^3.0.6"
   },
+  "devDependencies": {
+    "prettier": "^1.11.1"
+  },
   "homepage": "https://github.com/ipfs-shipyard/peer-blog#readme",
   "license": "MIT",
   "main": "index.js",
@@ -26,6 +29,7 @@
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
+    "prettier": "prettier --single-quote --no-semi --write src/**/*.js",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom"
   }
