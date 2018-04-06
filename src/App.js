@@ -9,14 +9,14 @@ const locationHelper = locationHelperBuilder({})
 
 const AdminWrapper = connectedRouterRedirect({
   redirectPath: '/admin',
-  authenticatedSelector: state => state.user.role === 'admin',
+  authenticatedSelector: ({ user }) => user.role === 'admin',
   wrapperDisplayName: 'AdminWrapper'
 })
 
 const NotAdminWrapper = connectedRouterRedirect({
   redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/admin/posts',
   allowRedirectBack: false,
-  authenticatedSelector: state => state.user.role === null,
+  authenticatedSelector: ({ user }) => user.role === null,
   wrapperDisplayName: 'NotAdminWrapper'
 })
 
