@@ -16,10 +16,18 @@
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
+    "husky": "^0.15.0-rc.13",
+    "lint-staged": "^7.0.4",
     "prettier": "^1.11.1"
   },
   "homepage": "https://github.com/ipfs-shipyard/peer-blog#readme",
   "license": "MIT",
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "main": "index.js",
   "private": true,
   "repository": {
@@ -29,7 +37,8 @@
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "prettier": "prettier --single-quote --no-semi --write src/**/*.js",
+    "pre-commit": "lint-staged",
+    "prettier": "prettier --write src/**/*.js",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom"
   }
