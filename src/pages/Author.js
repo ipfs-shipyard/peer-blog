@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { authorSelector } from '../redux/users'
+import { authorPostsSelector } from '../redux/posts'
+import Posts from '../components/PostsList'
 
 const mapStateToProps = (state, props) => ({
-  user: authorSelector(state, props)
+  user: authorSelector(state, props),
+  posts: authorPostsSelector(state, props)
 })
 
 const mapDispatchToProps = {}
 
 class Author extends Component {
   render() {
-    const { user } = this.props
+    const { user, posts } = this.props
     return (
       <React.Fragment>
-        <pre>{JSON.stringify(user, null, 2)}</pre>
+        <Posts posts={posts} />
       </React.Fragment>
     )
   }

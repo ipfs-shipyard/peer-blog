@@ -4,14 +4,14 @@ import locationHelperBuilder from 'redux-auth-wrapper/history4/locationHelper'
 const locationHelper = locationHelperBuilder({})
 
 export const Admin = connectedRouterRedirect({
-  redirectPath: '/admin',
+  redirectPath: '/login',
   authenticatedSelector: ({ user }) => !!user.auth,
   wrapperDisplayName: 'Admin'
 })
 
 export const NotAdmin = connectedRouterRedirect({
   redirectPath: (state, ownProps) =>
-    locationHelper.getRedirectQueryParam(ownProps) || '/admin/posts',
+    locationHelper.getRedirectQueryParam(ownProps) || '/edit/posts',
   allowRedirectBack: false,
   authenticatedSelector: ({ user }) => !user.auth,
   wrapperDisplayName: 'NotAdmin'

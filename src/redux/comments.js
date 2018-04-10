@@ -7,4 +7,10 @@ export const reducer = (state = initialState, action) => {
   }
 }
 
-export const commentsSelector = ({ comments }) => Object.values(comments)
+const combineData = state => comment => ({
+  ...comment,
+  user: state.users[comment.user]
+})
+
+export const commentsSelector = state =>
+  Object.values(state.comments).map(combineData(state))

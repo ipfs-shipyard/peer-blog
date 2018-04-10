@@ -7,18 +7,23 @@ export const reducer = (state = initialState, action) => {
   }
 }
 
-export const usersSelector = ({ users }) => Object.values(users)
+const combineData = state => user => ({
+  ...user,
+  posts: user.posts.map(id => state.posts[id]),
+  comments: user.comments.map(id => state.comments[id])
+})
+
+export const usersSelector = state =>
+  Object.values(state.users).map(combineData(state))
 
 export const authorsSelector = state =>
   usersSelector(state).filter(({ roles }) => roles.includes('author'))
 
-export const userSelector = ({ users }, { match }) => users[match.params.userId]
+export const userSelector = (state, { match }) =>
+  combineData(state)(state.users[match.params.userId])
 
 export const authorSelector = (state, props) => {
   const user = userSelector(state, props)
   if (!user || !user.roles.includes('author')) return null
-  return {
-    ...user,
-    posts: user.posts.map(post => state.posts[post])
-  }
+  return combineData(state)(user)
 }

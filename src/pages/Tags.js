@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { tagsSelector } from '../redux/tags'
+import Tag from '../components/Tag'
 
 const mapStateToProps = state => ({ tags: tagsSelector(state) })
 
@@ -9,13 +10,7 @@ const mapDispatchToProps = {}
 class Tags extends Component {
   render() {
     const { tags } = this.props
-    return (
-      <React.Fragment>
-        {tags.map(tag => (
-          <pre key={tag.id}>{JSON.stringify(tag, null, 2)}</pre>
-        ))}
-      </React.Fragment>
-    )
+    return <React.Fragment>{tags.map(tag => <Tag tag={tag} />)}</React.Fragment>
   }
 }
 

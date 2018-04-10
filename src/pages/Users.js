@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { usersSelector } from '../redux/users'
 
 const mapStateToProps = state => ({ users: usersSelector(state) })
@@ -12,7 +13,9 @@ class Users extends Component {
     return (
       <React.Fragment>
         {users.map(user => (
-          <pre key={user.id}>{JSON.stringify(user, null, 2)}</pre>
+          <Link key={user.id} to={`/users/${user.id}`}>
+            <pre>{JSON.stringify(user, null, 2)}</pre>
+          </Link>
         ))}
       </React.Fragment>
     )

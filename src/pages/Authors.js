@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { authorsSelector } from '../redux/users'
+import Author from '../components/Author'
 
 const mapStateToProps = state => ({ authors: authorsSelector(state) })
 
@@ -11,9 +12,7 @@ class Authors extends Component {
     const { authors } = this.props
     return (
       <React.Fragment>
-        {authors.map(user => (
-          <pre key={user.id}>{JSON.stringify(user, null, 2)}</pre>
-        ))}
+        {authors.map(user => <Author user={user} />)}
       </React.Fragment>
     )
   }

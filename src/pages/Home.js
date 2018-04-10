@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { homePostsSelector } from '../redux/posts'
+import PostsList from '../components/PostsList'
 
 const mapStateToProps = state => ({
   posts: homePostsSelector(state)
@@ -13,9 +14,7 @@ class Home extends Component {
     const { posts } = this.props
     return (
       <React.Fragment>
-        {posts.map(post => (
-          <pre key={post.id}>{JSON.stringify(post, null, 2)}</pre>
-        ))}
+        <PostsList posts={posts} />
       </React.Fragment>
     )
   }

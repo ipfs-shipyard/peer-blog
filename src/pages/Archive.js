@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { archivePostsSelector } from '../redux/posts'
+import PostsList from '../components/PostsList'
 
 const mapStateToProps = (state, props) => ({
   posts: archivePostsSelector(state, props)
@@ -13,9 +15,17 @@ class Archive extends Component {
     const { posts } = this.props
     return (
       <React.Fragment>
-        {posts.map(post => (
-          <pre key={post.id}>{JSON.stringify(post, null, 2)}</pre>
-        ))}
+        <nav>
+          <ul>
+            <li>
+              <Link to={{ search: '?year=2018' }}>2018</Link>
+            </li>
+            <li>
+              <Link to={{ search: '?year=2017' }}>2017</Link>
+            </li>
+          </ul>
+        </nav>
+        <PostsList posts={posts} />
       </React.Fragment>
     )
   }

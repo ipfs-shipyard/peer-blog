@@ -9,38 +9,31 @@ export const reducer = (state = initialState, action) => {
   }
 }
 
-export const homePostsSelector = ({ posts, comments, tags }) =>
-  Object.values(posts)
+const combineData = state => post => ({
+  ...post,
+  user: state.users[post.user],
+  tags: post.tags.map(id => state.tags[id]),
+  comments: post.comments.map(id => state.comments[id])
+})
+
+export const homePostsSelector = state =>
+  Object.values(state.posts)
     .filter(({ published }) => published)
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(0, 5)
-    .map(post => {
-      post.tags = post.tags.map(id => tags[id])
-      post.comments = post.comments.map(id => comments[id])
-      return post
-    })
+    .map(combineData(state))
 
-export const adminPostsSelector = ({ posts, comments, tags }) =>
-  Object.values(posts)
+export const adminPostsSelector = state =>
+  Object.values(state.posts)
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(0, 5)
-    .map(post => {
-      post.tags = post.tags.map(id => tags[id])
-      post.comments = post.comments.map(id => comments[id])
-      return post
-    })
+    .map(combineData(state))
 
-export const postSelector = ({ posts, comments, tags }, { match }) => {
-  const post = posts[match.params.postId]
-  return {
-    ...post,
-    tags: post.tags.map(id => tags[id]),
-    comments: post.comments.map(id => comments[id])
-  }
-}
+export const postSelector = (state, { match }) =>
+  combineData(state)(state.posts[match.params.postId])
 
-export const archivePostsSelector = ({ posts, comments, tags }, { location }) =>
-  Object.values(posts)
+export const archivePostsSelector = (state, { location }) =>
+  Object.values(state.posts)
     .filter(({ published }) => published)
     .filter(({ date }) =>
       date.startsWith(
@@ -51,8 +44,20 @@ export const archivePostsSelector = ({ posts, comments, tags }, { location }) =>
     )
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(0, 5)
-    .map(post => {
-      post.tags = post.tags.map(id => tags[id])
-      post.comments = post.comments.map(id => comments[id])
-      return post
-    })
+    .map(combineData(state))
+
+export const tagPostsSelector = (state, { match }) =>
+  Object.values(state.posts)
+    .filter(({ published }) => published)
+    .filter(({ tags }) => tags.includes(match.params.tagId))
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .slice(0, 5)
+    .map(combineData(state))
+
+export const authorPostsSelector = (state, { match }) =>
+  Object.values(state.posts)
+    .filter(({ published }) => published)
+    .filter(({ user }) => user === match.params.userId)
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .slice(0, 5)
+    .map(combineData(state))
