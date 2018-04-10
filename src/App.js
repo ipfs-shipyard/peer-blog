@@ -1,25 +1,20 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
-import locationHelperBuilder from 'redux-auth-wrapper/history4/locationHelper'
-import Page, { Admin } from './pages'
-
-const locationHelper = locationHelperBuilder({})
-
-const AdminWrapper = connectedRouterRedirect({
-  redirectPath: '/admin',
-  authenticatedSelector: ({ user }) => user.role === 'admin',
-  wrapperDisplayName: 'AdminWrapper'
-})
-
-const NotAdminWrapper = connectedRouterRedirect({
-  redirectPath: (state, ownProps) =>
-    locationHelper.getRedirectQueryParam(ownProps) || '/admin/posts',
-  allowRedirectBack: false,
-  authenticatedSelector: ({ user }) => user.role === null,
-  wrapperDisplayName: 'NotAdminWrapper'
-})
+import { Admin, NotAdmin } from './auth'
+import Home from './pages/Home'
+import Post from './pages/Post'
+import Archive from './pages/Archive'
+import Tags from './pages/Tags'
+import Authors from './pages/Authors'
+import Author from './pages/Author'
+import Login from './pages/Login'
+import AdminHome from './pages/AdminHome'
+import NewPost from './pages/NewPost'
+import EditPost from './pages/EditPost'
+import Comments from './pages/Comments'
+import Users from './pages/Users'
+import EditUser from './pages/EditUser'
 
 class App extends Component {
   render() {
@@ -27,40 +22,29 @@ class App extends Component {
       <Provider store={this.props.store}>
         <Router>
           <React.Fragment>
-            <ul>
-              <Link to="/admin/posts">Admin Posts</Link>
-            </ul>
             <Switch>
-              <Route exact path="/" component={Page} />
-              <Route exact path="/posts" component={Page} />
-              <Route exact path="/posts/:postId" component={Page} />
-              <Route exact path="/archive" component={Page} />
-              <Route exact path="/tags" component={Page} />
-              <Route exact path="/authors" component={Page} />
-              <Route exact path="/authors/:userId" component={Page} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/posts" component={Home} />
+              <Route exact path="/posts/:postId" component={Post} />
+              <Route exact path="/archive" component={Archive} />
+              <Route exact path="/tags" component={Tags} />
+              <Route exact path="/authors" component={Authors} />
+              <Route exact path="/authors/:userId" component={Author} />
 
-              <Route exact path="/admin" component={NotAdminWrapper(Admin)} />
-              <Route exact path="/admin/posts" component={AdminWrapper(Page)} />
-              <Route
-                exact
-                path="/admin/posts/new"
-                component={AdminWrapper(Page)}
-              />
+              <Route exact path="/admin" component={NotAdmin(Login)} />
+              <Route exact path="/admin/posts" component={Admin(AdminHome)} />
+              <Route exact path="/admin/posts/new" component={Admin(NewPost)} />
               <Route
                 exact
                 path="/admin/posts/:postId"
-                component={AdminWrapper(Page)}
+                component={Admin(EditPost)}
               />
-              <Route
-                exact
-                path="/admin/comments"
-                component={AdminWrapper(Page)}
-              />
-              <Route exact path="/admin/users" component={AdminWrapper(Page)} />
+              <Route exact path="/admin/comments" component={Admin(Comments)} />
+              <Route exact path="/admin/users" component={Admin(Users)} />
               <Route
                 exact
                 path="/admin/users/:userId"
-                component={AdminWrapper(Page)}
+                component={Admin(EditUser)}
               />
             </Switch>
           </React.Fragment>
